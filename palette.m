@@ -16,17 +16,12 @@ function [c, c_light, c_dark] = palette(n_colors,bg,L)
 if ~exist('bg','var')
     bg='w';
 end
-
 if ~exist('L','var')
     L=1.7;
 end
 
-
 % create colors
 c = distinguishable_colors(n_colors,bg);    % main colors
-c_hsl = colorspace('RGB->HSL',c);           % in HSL
-
-c_light = colorspace('HSL->RGB',[1,1,L].*c_hsl);
-c_dark = colorspace('HSL->RGB',[1,1,1/L].*c_hsl);
-
+[c_light,c_dark] = colshades(c,L);          % light/dark shades
+    
 end
