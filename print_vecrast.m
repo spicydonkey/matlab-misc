@@ -16,10 +16,10 @@ default_exportType='pdf';
 % input parser
 p = inputParser;
 addRequired(p,'figureHandle',@ishandle)
-addParameter(p,'filename',default_filename,@isstring);
+addParameter(p,'filename',default_filename,@ischar);
 addParameter(p,'resolution',default_resolution,@isnumeric);
 addParameter(p,'stack',default_stack,@isnumeric);
-addParameter(p,'exportType',default_exportType,@isstring);
+addParameter(p,'exportType',default_exportType,@ischar);
 parse(p,figureHandle,varargin{:});
 
 % call vecrast
