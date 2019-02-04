@@ -1,10 +1,14 @@
 function vecrast(figureHandle, filename, resolution, stack, exportType)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Original: 
 % Theodoros Michelis, 6 October 2017
 % TUDelft, Aerospace Engineering, Aerodynamics
 % t.michelis@tudelft.nl
 %
+% Minor edits:
+% David Shin
+% dk.shin1992@gmail.com
 %
 % D E S C R I P T I O N:
 % vecrast is a function that allows to automatically save a figure with
@@ -24,7 +28,7 @@ function vecrast(figureHandle, filename, resolution, stack, exportType)
 %   resolution:     Desired resolution of rasterising in dpi
 %   stack:          'top' or 'bottom'. Stacking of raster image with
 %                       respect to axis in vector figure, see examples below.
-%   exportType:     'pdf' or 'eps'. Export file type for the output file.
+%   exportType:     'pdf'/'eps'/'svg'. Export file type for the output file.
 %
 %
 % N O T E S:
@@ -63,7 +67,7 @@ function vecrast(figureHandle, filename, resolution, stack, exportType)
 if strcmp(stack, 'top') + strcmp(stack, 'bottom') == 0
     error('Stack must be ''top'' or ''bottom''');
 end
-if strcmp(exportType, 'pdf') + strcmp(exportType, 'eps') == 0
+if strcmp(exportType, 'pdf') + strcmp(exportType, 'eps') + strcmp(exportType, 'svg') == 0
     error('Stack must be ''pdf'' or ''eps''');
 end
 
@@ -181,16 +185,17 @@ axis(rasterAxis, 'off');
 hcbOriginal = findall(figureHandle, 'type', 'colorbar');
 hcbVector = findall(vectorFigure, 'type', 'colorbar');
 
-% if ~isempty(hcbOriginal)
-%     cbLimits = hcbOriginal.Limits;
-%     hcbVector.Ticks = (hcbOriginal.Ticks - cbLimits(1))/diff(cbLimits);
-%     hcbVector.TickLabels = hcbOriginal.TickLabels;
-% end
-for i=1:numel(hcbOriginal)
-    cbLimits = hcbOriginal(i).Limits;
-    hcbVector(i).Ticks = (hcbOriginal(i).Ticks - cbLimits(1))/diff(cbLimits);
-    hcbVector(i).TickLabels = hcbOriginal(i).TickLabels;
+if ~isempty(hcbOriginal)
+    cbLimits = hcbOriginal.Limits;
+%     hcbVector.Ticks = (hcbOriginal.Ticks - cbLimits(1))/diff(cbLimits);     %???
+    hcbVector.Ticks = hcbOriginal.Ticks;        % debug
+    hcbVector.TickLabels = hcbOriginal.TickLabels;
 end
+% for i=1:numel(hcbOriginal)
+%     cbLimits = hcbOriginal(i).Limits;
+%     hcbVector(i).Ticks = (hcbOriginal(i).Ticks - cbLimits(1))/diff(cbLimits);
+%     hcbVector(i).TickLabels = hcbOriginal(i).TickLabels;
+% end
 
 % Bring all annotations on top
 annotations = findall(vectorFigure, 'Tag', 'scribeOverlay');
@@ -210,6 +215,8 @@ if strcmp(exportType, 'pdf') == 1
     print(vectorFigure, [filename '.pdf'], '-dpdf', '-loose', '-painters', ['-r' num2str(resolution) ]);
 elseif strcmp(exportType, 'eps') == 1
     print(vectorFigure, [filename '.eps'], '-depsc2', '-loose', '-painters');
+elseif strcmp(exportType, 'svg') == 1
+    print(vectorFigure, [filename '.svg'], '-dsvg', '-loose', '-painters');
 end
 
 close(vectorFigure);
