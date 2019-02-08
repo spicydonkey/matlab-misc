@@ -148,6 +148,7 @@ end
 
 % Hide all colorbars and legends from raster figure
 colorbarHandle = findall(rasterFigure, 'type', 'colorbar');
+%hcbOriginal = findall(figureHandle, 'type', 'colorbar');		% DKS debugging colorbar problems
 legendHandle = findall(rasterFigure, 'type', 'legend');
 set([colorbarHandle; legendHandle], 'visible', 'off');
 
@@ -187,8 +188,8 @@ hcbVector = findall(vectorFigure, 'type', 'colorbar');
 
 if ~isempty(hcbOriginal)
     cbLimits = hcbOriginal.Limits;
-%     hcbVector.Ticks = (hcbOriginal.Ticks - cbLimits(1))/diff(cbLimits);     %???
-    hcbVector.Ticks = hcbOriginal.Ticks;        % debug
+    hcbVector.Ticks = (hcbOriginal.Ticks - cbLimits(1))/diff(cbLimits);
+%     hcbVector.Ticks = hcbOriginal.Ticks;        % DKS: seen this line work when the above line fails
     hcbVector.TickLabels = hcbOriginal.TickLabels;
 end
 % for i=1:numel(hcbOriginal)
