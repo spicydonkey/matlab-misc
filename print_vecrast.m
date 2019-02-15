@@ -18,7 +18,7 @@ p = inputParser;
 addRequired(p,'figureHandle',@ishandle)
 addParameter(p,'filename',default_filename,@ischar);
 addParameter(p,'resolution',default_resolution,@isnumeric);
-addParameter(p,'stack',default_stack,@isnumeric);
+addParameter(p,'stack',default_stack,@ischar);
 addParameter(p,'exportType',default_exportType,@ischar);
 parse(p,figureHandle,varargin{:});
 
