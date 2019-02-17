@@ -68,7 +68,7 @@ if strcmp(stack, 'top') + strcmp(stack, 'bottom') == 0
     error('Stack must be ''top'' or ''bottom''');
 end
 if strcmp(exportType, 'pdf') + strcmp(exportType, 'eps') + strcmp(exportType, 'svg') == 0
-    error('Stack must be ''pdf'' or ''eps''');
+    error('Stack must be ''pdf'',''eps'' or ''svg''');
 end
 
 % Ensure figure has finished drawing
@@ -102,7 +102,7 @@ end
 % Create axis in vector figure to fill with raster image
 rasterAxis = axes(vectorFigure, 'color', 'none', 'box', 'off', 'units', 'points');
 set(rasterAxis, 'position', [0 0 figurePosition(3) figurePosition(4)]);
-uistack(rasterAxis, stack);
+uistack(rasterAxis, stack);         % DKS: the single-layer raster axis causes the problem!
 
 % Ensure fontsizes are the same in all figures
 figText = findall(figureHandle, 'type', 'text');
@@ -115,11 +115,14 @@ end
 
 % Raster Figure ----------------------------------------------------------
 % Select what to remove from raster figure
+%   DKS: justify/explain in documentation raster-/vectorizables classification
 axesHandle = findall(rasterFigure, 'type', 'axes');
 axesPosition = get(axesHandle,'position'); % Fix: get axes size
 set(axesHandle, 'color', 'none');
 for i = 1:length(axesHandle)
     contents = findall(axesHandle(i));
+    % DKS: not so elegant... 
+    %   define list of graphics object (ras/vec) and cellfun it
     toKeep = [...
         findall(axesHandle(i), 'type', 'patch');...
         findall(axesHandle(i), 'type', 'surface');...
@@ -139,7 +142,7 @@ else
     end
 end
 
-
+% DKS: why not bunch annotations/colorbars/legends together?
 % Remove all annotations from raster figure
 annotations = findall(rasterFigure, 'Tag', 'scribeOverlay');
 for i = 1:length(annotations)
@@ -148,12 +151,12 @@ end
 
 % Hide all colorbars and legends from raster figure
 colorbarHandle = findall(rasterFigure, 'type', 'colorbar');
-%hcbOriginal = findall(figureHandle, 'type', 'colorbar');		% DKS debugging colorbar problems
 legendHandle = findall(rasterFigure, 'type', 'legend');
 set([colorbarHandle; legendHandle], 'visible', 'off');
 
 % Print rasterFigure on temporary .png
 % ('-loose' ensures that the bounding box of the figure is not cropped)
+% DKS: printing figure as .png causes all "raster" objects' layer orering
 print(rasterFigure, [filename 'Temp.png'], '-dpng', ['-r' num2str(resolution) ], '-loose', '-opengl');
 close(rasterFigure);
 
@@ -173,6 +176,8 @@ for i = 1:length(axesHandle)
 end
 
 % Insert Raster image into the vector figure
+% DKS: this is the single overlaid raster img - cannot make a generalised
+% ras-vec inter-layered figure
 [A, ~, alpha] = imread([filename 'Temp.png']);
 
 if isempty(alpha)==1
@@ -183,6 +188,7 @@ end
 axis(rasterAxis, 'off');
 
 % Ensure that all colorbar ticks match the original figure
+%   NOTE: without a visible image colorbar axis is undefined
 hcbOriginal = findall(figureHandle, 'type', 'colorbar');
 hcbVector = findall(vectorFigure, 'type', 'colorbar');
 
