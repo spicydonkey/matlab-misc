@@ -16,14 +16,16 @@ function [x_ax, y_ax] = figpos2axpos(axesHandle,x_fig,y_fig)
 % DKS
 % 2019-02-17
 
-axesPosition=get(axesHandle,'position');
+% axesPosition=get(axesHandle,'position');
+axesplotboxPosition=plotboxpos(axesHandle);     % get plot-box position
+
 axesXlim=get(axesHandle,'xlim');
 axesYlim=get(axesHandle,'ylim');
 
-dxdX=diff(axesXlim)/axesPosition(3);
-dydY=diff(axesYlim)/axesPosition(4);
+dxdX=diff(axesXlim)/axesplotboxPosition(3);
+dydY=diff(axesYlim)/axesplotboxPosition(4);
 
-x_ax = (x_fig-axesPosition(1))*dxdX;
-y_ax = (y_fig-axesPosition(2))*dydY;
+x_ax = (x_fig-axesplotboxPosition(1))*dxdX + axesXlim(1);
+y_ax = (y_fig-axesplotboxPosition(2))*dydY + axesYlim(1);
 
 end
