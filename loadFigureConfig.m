@@ -7,8 +7,10 @@ function config_fig = loadFigureConfig()
 
 % defaults
 config_fig.units='centimeters';
-config_fig.pos_full=[0,0,17.2,6];       % full page width
-config_fig.pos_2col=[0,0,8.6,3.2];      % 2-column
+config_fig.pagewidth=17.2;
+config_fig.halfpwidth=8.6;
+config_fig.pos_full=[0,0,config_fig.pagewidth,6];       % full page width
+config_fig.pos_2col=[0,0,config_fig.halfpwidth,3.2];    % 2-column
 config_fig.rend='painters';
 config_fig.ax_fontsize=9;
 config_fig.ax_lwid=0.5;
