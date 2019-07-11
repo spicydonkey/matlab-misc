@@ -4,6 +4,9 @@ function colors = palette_cmap(n,cmap)
 %
 %   colors = palette_cmap(n,cmap)
 %
+%   EXAMPLE:
+%       c = palette_cmap(7,@gray)
+%
 % DKS
 % 2019-07-11 
 
