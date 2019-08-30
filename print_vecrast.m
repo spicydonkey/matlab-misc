@@ -1,6 +1,10 @@
 function print_vecrast(figureHandle,varargin)
-% wrapper for vecrast to save figure with commonly used file-naming, etc.
+% print_vecrast - wrapper for vecrast to save figure with commonly used file-naming, etc.
 % DKS
+%
+% EXAMPLE
+%   print_vecrast(gcf);
+%
 
 %%% David's defaults
 if ~isempty(figureHandle.Name)
@@ -9,7 +13,7 @@ else
     fname='temp';
 end
 default_filename=strcat(fname,'_',getdatetimestr);
-default_resolution=300;
+default_resolution=600;
 default_stack='bottom';
 default_exportType='pdf';
 
