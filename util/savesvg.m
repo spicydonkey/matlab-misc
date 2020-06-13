@@ -12,6 +12,6 @@ end
 if isempty(filename)
     filename = 'untitled';
 end
-foutname = strjoin({filename,timestr},'_');
+foutname = strjoin({filename,timestr,'.svg'},'_');
 saveas(hfig,foutname,'svg');
 end
