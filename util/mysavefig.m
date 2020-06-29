@@ -1,5 +1,5 @@
-function savesvg(hfig,filename)
-% Save figures as SVG using MATLAB's default function.
+function mysavefig(hfig,filename)
+% My wrapper to save figures as .fig file using MATLAB's default function.
 % DKS 2020
 
 timestr = getdatetimestr;
@@ -13,5 +13,5 @@ if isempty(filename)
     filename = 'untitled';
 end
 foutname = strjoin({filename,timestr},'_');
-saveas(hfig,[foutname,'.svg'],'svg');
+saveas(hfig,[foutname,'.fig'],'fig');
 end
